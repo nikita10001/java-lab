@@ -28,6 +28,6 @@ public class ElectricalDevice {
     }
     @Override
     public String toString() {
-        return "Type: " + this.type + ".  power: " + this.power + ", pluggedIn: " +  this.isPluggedIn;
+        return "Тип: " + this.type + ".  мощность: " + this.power + ", состояние: " +  (this.isPluggedIn ? "включён" : "выключен" );
     }
 }

@@ -14,29 +14,32 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         ArrayList<ElectricalDevice> devices = new ArrayList<>();
-        devices.add(new ElectricalDevice("Fridge", 1000, false));
-        devices.add(new ElectricalDevice("TV", 500, false));
-        devices.add(new ElectricalDevice("Washing Machine", 20, false));
-        devices.add(new ElectricalDevice("Iron", 1000, false));
-        devices.add(new ElectricalDevice("Microwave", 200, false));
+//        devices.add(new ElectricalDevice("Fridge", 1000, false));
+//        devices.add(new ElectricalDevice("TV", 500, false));
+//        devices.add(new ElectricalDevice("Washing Machine", 20, false));
+//        devices.add(new ElectricalDevice("Iron", 1000, false));
+//        devices.add(new ElectricalDevice("Microwave", 200, false));
+        devices.add(new ElectricalDevice("Холодильник", 1000, false));
+        devices.add(new ElectricalDevice("Телевизор", 500, false));
+        devices.add(new ElectricalDevice("Стиральная машина", 20, false));
+        devices.add(new ElectricalDevice("Утюг", 1000, false));
+        devices.add(new ElectricalDevice("Микроволновка", 200, false));
 
         DevicesList deviceList = new DevicesList(devices);
 
         while (true) {
-            int type;
             System.out.println("\nВыберите пунк меню");
             System.out.println("1. Список устройств");
             System.out.println("2. Включить устройство ");
             System.out.println("3. Посчитать потребляемую мощность ");
             System.out.println("0. Выйти из программы");
-            type = checkIsNum();
-            switch (type) {
+            switch (checkIsNum()) {
                 case 1:
                     deviceList.showDevices();
                     break;
                 case 2:
                     deviceList.showDevices();
-                    System.out.println("Выберите устройство для включения: (Введите Type)");
+                    System.out.println("Выберите устройство для включения: (Введите тип)");
                     deviceList.plugInDevice(scanner.next());
                     break;
                 case 3:
