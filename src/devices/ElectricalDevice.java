@@ -1,5 +1,5 @@
 package devices;
-public class ElectricalDevice {
+public class ElectricalDevice{
     protected String type;
     protected int power;
     protected boolean isPluggedIn;
@@ -30,4 +30,5 @@ public class ElectricalDevice {
     public String toString() {
         return "Тип: " + this.type + ".  мощность: " + this.power + ", состояние: " +  (this.isPluggedIn ? "включён" : "выключен" );
     }
+
 }

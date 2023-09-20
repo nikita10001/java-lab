@@ -28,17 +28,18 @@ public class DevicesList {
         return sum;
     }
 
-    public ElectricalDevice findDeviceByType(String type){
+    public ElectricalDevice findDevice(deviceCheck ch){
         for(ElectricalDevice device : devicesList){
-            if(device.getType().equals(type)){
+            if(ch.check(device)){
                 return device;
             }
         }
         return null;
     }
 
+
     public void plugInDevice(String type){
-        ElectricalDevice foundDevice = findDeviceByType(type);
+        ElectricalDevice foundDevice = findDevice(device ->  device.getType().equals(type));
         if(foundDevice == null){
             System.out.println("Такого устройства нет");
             return;
@@ -48,7 +49,11 @@ public class DevicesList {
             return;
         }
         foundDevice.plugIn();
-    }
+        System.out.println("Устройство " + type +  " включено");
 
+    }
 }
 
+interface deviceCheck{
+    boolean check(ElectricalDevice d);
+}
