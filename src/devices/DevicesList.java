@@ -1,16 +1,18 @@
 package devices;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DevicesList {
+public class DevicesList implements Serializable {
     private ArrayList<ElectricalDevice> devicesList;
     public DevicesList(ArrayList<ElectricalDevice> devicesList){
         this.devicesList = devicesList;
     }
+    public DevicesList(){}
     public ArrayList<ElectricalDevice> getDevicesList() {
         return devicesList;
     }
@@ -19,10 +21,14 @@ public class DevicesList {
     }
 
     public void showDevices(){
-        devicesList.stream().forEach(device -> System.out.println(device) );
+        devicesList.forEach(device -> System.out.println(device) );
     }
 
-    public void showDevices(ArrayList<ElectricalDevice> deviceList){
+    public void showDevices(List<ElectricalDevice> deviceList){
+        if(deviceList.isEmpty()){
+            System.out.println("Список пуст");
+            return;
+        }
         deviceList.forEach(device -> System.out.println(device));
     }
 
@@ -38,23 +44,24 @@ public class DevicesList {
 
     public void ascSort() {
         synchronized (this) {
-            Collections.sort(devicesList, Comparator.comparing(ElectricalDevice::getPower));
+            ArrayList<ElectricalDevice> copy = devicesList;
+            Collections.sort(copy, Comparator.comparing(ElectricalDevice::getPower));
             System.out.println("Сортировка по возрастанию:");
             showDevices();
         }
     }
     public void descSort() {
         synchronized (this){
-            Collections.sort(devicesList, Comparator.comparing(ElectricalDevice::getPower).reversed());
+            ArrayList<ElectricalDevice> copy = devicesList;
+            Collections.sort(copy, Comparator.comparing(ElectricalDevice::getPower).reversed());
             System.out.println("Сортировка по убыванию: ");
             showDevices();
         }
     }
 
-
     public ElectricalDevice findDevice(deviceCheck ch){
         for(ElectricalDevice device : devicesList){
-            if(ch.check(device)){
+            if(ch.check(device)) {
                 return device;
             }
         }
@@ -74,21 +81,33 @@ public class DevicesList {
         System.out.println("Устройство " + type +  " включено");
 
     }
-    public List<ElectricalDevice> filterDevices() {
+    public ArrayList<ElectricalDevice> filterDevices() {
         return devicesList.stream()
                 .filter(device -> device.getIsPluggedIn())
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
+
 
     }
-    public List<ElectricalDevice> skipDevices(int num) {
-        return null;
+    public ArrayList<ElectricalDevice> skipDevices(int num) {
+        return devicesList.stream()
+                .skip(num)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+    public ArrayList<ElectricalDevice> getLimit(int num) {
+        return devicesList.stream()
+                .limit(num)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
     public ArrayList<ElectricalDevice> deleteDevices(){
         return devicesList.stream()
-                .distinct()
+                .collect(Collectors.toMap(ElectricalDevice::getType, item -> item, (a, b) -> a))
+                .values()
+                .stream()
                 .collect(Collectors.toCollection(ArrayList::new));
 
+
     }
+
 }
 
 interface deviceCheck{

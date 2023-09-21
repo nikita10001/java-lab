@@ -3,9 +3,9 @@
 
 import devices.DevicesList;
 import devices.ElectricalDevice;
-import devices.SortingThread;
 import validators.Validator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,8 +25,6 @@ public class Main {
         devices.add(new ElectricalDevice("Микроволновка", 200, false));
         devices.add(new ElectricalDevice("Микроволновка", 200, false));
 
-
-
         DevicesList deviceList = new DevicesList(devices);
 
         while (true) {
@@ -36,15 +34,16 @@ public class Main {
             System.out.println("3. Посчитать потребляемую мощность ");
             System.out.println("4. Сортировать устройства");
             System.out.println("5. Фильтрация, показать включённые устройства");
-            System.out.println("6. Пропустить 2 элемента");
-            System.out.println("7. Выбрать 2 элемента");
+            System.out.println("6. Пропустить 2 первых элемента");
+            System.out.println("7. Удалить повторяющиеся элементы");
+            System.out.println("8. Вывести первых 2 элемента");
             System.out.println("0. Выйти из программы");
             switch (Validator.checkIsNum()) {
                 case 1:
                     deviceList.showDevices();
                     break;
                 case 2:
-                    deviceList.showDevices();
+                    deviceList.showDevices(deviceList.deleteDevices());
                     System.out.println("Выберите устройство для включения: (Введите тип)");
                     deviceList.plugInDevice(scanner.next());
                     break;
@@ -53,10 +52,8 @@ public class Main {
                     System.out.println(deviceList.calcGeneralPower());
                     break;
                 case 4:
-                    SortingThread firstThread = new SortingThread(deviceList, false);
-                    SortingThread secondThread = new SortingThread(deviceList, true);
-                    Thread th1 = new Thread(firstThread);
-                    Thread th2 = new Thread(secondThread);
+                    Thread th1 = new Thread(() -> deviceList.descSort());
+                    Thread th2 = new Thread(() -> deviceList.ascSort());
                     th1.start();
                     th2.start();
                     try {
@@ -67,13 +64,16 @@ public class Main {
                     }
                     break;
                 case 5:
-                    System.out.println(deviceList.filterDevices().isEmpty() ? "Список пуст" : deviceList.filterDevices() );
+                    deviceList.showDevices(deviceList.filterDevices());
                     break;
                 case 6:
-                    System.out.println(deviceList.skipDevices(2));
+                    deviceList.showDevices(deviceList.skipDevices(2));
                     break;
                 case 7:
                     deviceList.showDevices(deviceList.deleteDevices());
+                    break;
+                case 8:
+                    deviceList.showDevices(deviceList.getLimit(2));
                     break;
                 case 0:
                     return;

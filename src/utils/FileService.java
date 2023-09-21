@@ -1,10 +1,9 @@
 //package utils;
 //
-//import java.io.FileInputStream;
-//import java.io.ObjectInputStream;
+//import java.io.*;
 //
-//public class FileService {
-//    public <T> readFromFile(T obj, String URL){
+//public class FileService implements Serializable{
+//    public static <T> T readFromFile(T obj, String URL){
 //        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(URL))){
 //            obj = (T) ois.readObject();
 //            System.out.println("Файл успешно прочитан.");
@@ -15,11 +14,11 @@
 //        }
 //        return obj;
 //    }
-//    public static void writeInFile(Derivative der, String URL){
+//    public static <T> void writeInFile(T obj, String URL){
 //        ObjectOutputStream ous = null;
 //        try{
 //            ous = new ObjectOutputStream(new FileOutputStream(URL));
-//            ous.writeObject(der);
+//            ous.writeObject(obj);
 //            System.out.println("Данные успешно сохранены.");
 //        }catch (IOException e){
 //            System.out.println(e);
