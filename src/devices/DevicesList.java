@@ -1,6 +1,10 @@
 package devices;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DevicesList {
     private ArrayList<ElectricalDevice> devicesList;
@@ -15,7 +19,11 @@ public class DevicesList {
     }
 
     public void showDevices(){
-        devicesList.forEach(device -> System.out.println(device) );
+        devicesList.stream().forEach(device -> System.out.println(device) );
+    }
+
+    public void showDevices(ArrayList<ElectricalDevice> deviceList){
+        deviceList.forEach(device -> System.out.println(device));
     }
 
     public int calcGeneralPower(){
@@ -28,6 +36,22 @@ public class DevicesList {
         return sum;
     }
 
+    public void ascSort() {
+        synchronized (this) {
+            Collections.sort(devicesList, Comparator.comparing(ElectricalDevice::getPower));
+            System.out.println("Сортировка по возрастанию:");
+            showDevices();
+        }
+    }
+    public void descSort() {
+        synchronized (this){
+            Collections.sort(devicesList, Comparator.comparing(ElectricalDevice::getPower).reversed());
+            System.out.println("Сортировка по убыванию: ");
+            showDevices();
+        }
+    }
+
+
     public ElectricalDevice findDevice(deviceCheck ch){
         for(ElectricalDevice device : devicesList){
             if(ch.check(device)){
@@ -36,8 +60,6 @@ public class DevicesList {
         }
         return null;
     }
-
-
     public void plugInDevice(String type){
         ElectricalDevice foundDevice = findDevice(device ->  device.getType().equals(type));
         if(foundDevice == null){
@@ -50,6 +72,21 @@ public class DevicesList {
         }
         foundDevice.plugIn();
         System.out.println("Устройство " + type +  " включено");
+
+    }
+    public List<ElectricalDevice> filterDevices() {
+        return devicesList.stream()
+                .filter(device -> device.getIsPluggedIn())
+                .collect(Collectors.toList());
+
+    }
+    public List<ElectricalDevice> skipDevices(int num) {
+        return null;
+    }
+    public ArrayList<ElectricalDevice> deleteDevices(){
+        return devicesList.stream()
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
 
     }
 }

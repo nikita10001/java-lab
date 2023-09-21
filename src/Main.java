@@ -4,6 +4,7 @@
 import devices.DevicesList;
 import devices.ElectricalDevice;
 import devices.SortingThread;
+import validators.Validator;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -21,6 +22,8 @@ public class Main {
         devices.add(new ElectricalDevice("Стиральная машина", 20, false));
         devices.add(new ElectricalDevice("Утюг", 1000, false));
         devices.add(new ElectricalDevice("Микроволновка", 200, false));
+        devices.add(new ElectricalDevice("Микроволновка", 200, false));
+        devices.add(new ElectricalDevice("Микроволновка", 200, false));
 
 
 
@@ -32,8 +35,11 @@ public class Main {
             System.out.println("2. Включить устройство ");
             System.out.println("3. Посчитать потребляемую мощность ");
             System.out.println("4. Сортировать устройства");
+            System.out.println("5. Фильтрация, показать включённые устройства");
+            System.out.println("6. Пропустить 2 элемента");
+            System.out.println("7. Выбрать 2 элемента");
             System.out.println("0. Выйти из программы");
-            switch (checkIsNum()) {
+            switch (Validator.checkIsNum()) {
                 case 1:
                     deviceList.showDevices();
                     break;
@@ -53,13 +59,21 @@ public class Main {
                     Thread th2 = new Thread(secondThread);
                     th1.start();
                     th2.start();
-
                     try {
                         th1.join();
                         th2.join();
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                    break;
+                case 5:
+                    System.out.println(deviceList.filterDevices().isEmpty() ? "Список пуст" : deviceList.filterDevices() );
+                    break;
+                case 6:
+                    System.out.println(deviceList.skipDevices(2));
+                    break;
+                case 7:
+                    deviceList.showDevices(deviceList.deleteDevices());
                     break;
                 case 0:
                     return;
@@ -68,5 +82,6 @@ public class Main {
 
         }
     }
+
 }
 
