@@ -59,7 +59,7 @@ public class Main {
                     try {
                         th1.join();
                         th2.join();
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                     break;

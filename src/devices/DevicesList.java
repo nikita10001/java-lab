@@ -43,20 +43,20 @@ public class DevicesList implements Serializable {
     }
 
     public void ascSort() {
-        synchronized (this) {
             ArrayList<ElectricalDevice> copy = devicesList;
-            Collections.sort(copy, Comparator.comparing(ElectricalDevice::getPower));
-            System.out.println("Сортировка по возрастанию:");
-            showDevices();
-        }
+            synchronized (this){
+                Collections.sort(copy, Comparator.comparing(ElectricalDevice::getPower));
+                System.out.println("Сортировка по возрастанию:");
+                showDevices();
+            }
     }
     public void descSort() {
-        synchronized (this){
             ArrayList<ElectricalDevice> copy = devicesList;
-            Collections.sort(copy, Comparator.comparing(ElectricalDevice::getPower).reversed());
-            System.out.println("Сортировка по убыванию: ");
-            showDevices();
-        }
+            synchronized (this) {
+                Collections.sort(copy, Comparator.comparing(ElectricalDevice::getPower).reversed());
+                System.out.println("Сортировка по убыванию: ");
+                showDevices();
+            }
     }
 
     public ElectricalDevice findDevice(deviceCheck ch){
@@ -81,7 +81,7 @@ public class DevicesList implements Serializable {
         System.out.println("Устройство " + type +  " включено");
 
     }
-    public ArrayList<ElectricalDevice> filterDevices() {
+    public ArrayList<ElectricalDevice> filtfghvcerDevices() {
         return devicesList.stream()
                 .filter(device -> device.getIsPluggedIn())
                 .collect(Collectors.toCollection(ArrayList::new));
